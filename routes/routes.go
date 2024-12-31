@@ -13,9 +13,9 @@ func InitRoutes(
 
 	r.Use(middlewares.Recovery())
 
-	publicApi := r.Group("/api")
+	apiGroup := r.Group("/api")
 
-	initAuthRoutes(publicApi, authHandler)
+	initAuthRoutes(apiGroup, authHandler)
 
 	return r
 }

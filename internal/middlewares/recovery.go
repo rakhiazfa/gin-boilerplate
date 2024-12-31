@@ -17,10 +17,13 @@ func Recovery() gin.HandlerFunc {
 				case *utils.HttpError:
 					handleHttpError(c, err)
 					return
+				case *utils.UniqueFieldError:
+					handleUniqueFieldError(c, err)
+					return
 				default:
 					c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-						"message": "Internal Server Error",
-						"error":   err.(error).Error(),
+						"error":   "Internal Server Error",
+						"message": err.(error).Error(),
 					})
 				}
 			}
@@ -35,12 +38,18 @@ func handleHttpError(c *gin.Context, err *utils.HttpError) {
 
 	if errors.As(err.Reason, &validationErrors) {
 		c.AbortWithStatusJSON(err.StatusCode, gin.H{
-			"message": err.Message,
-			"errors":  utils.FormatValidationErrors(validationErrors),
+			"errors": utils.FormatValidationErrors(validationErrors),
 		})
 	} else {
 		c.AbortWithStatusJSON(err.StatusCode, gin.H{
 			"message": err.Message,
 		})
 	}
+}
+
+func handleUniqueFieldError(c *gin.Context, err *utils.UniqueFieldError) {
+	c.AbortWithStatusJSON(err.StatusCode, gin.H{
+		"field":   err.Field,
+		"message": err.Message,
+	})
 }
