@@ -1,4 +1,4 @@
-package models
+package dtos
 
 type SignUpReq struct {
 	Name     string `json:"name" validate:"required,max=100"`

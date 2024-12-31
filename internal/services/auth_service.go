@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/rakhiazfa/gin-boilerplate/internal/models"
+	"github.com/rakhiazfa/gin-boilerplate/internal/dtos"
 	"gorm.io/gorm"
 )
 
@@ -15,9 +15,10 @@ func NewAuthService(db *gorm.DB) *AuthService {
 	}
 }
 
-func (service *AuthService) SignIn(req models.SignInReq) string {
-	return ""
+func (service *AuthService) SignIn(req dtos.SignInReq) (string, error) {
+	return "", nil
 }
 
-func (service *AuthService) SignUp(req models.SignUpReq) {
+func (service *AuthService) SignUp(req dtos.SignUpReq) error {
+	return nil
 }

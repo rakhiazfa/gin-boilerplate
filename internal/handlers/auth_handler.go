@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rakhiazfa/gin-boilerplate/internal/models"
+	"github.com/rakhiazfa/gin-boilerplate/internal/dtos"
 	"github.com/rakhiazfa/gin-boilerplate/internal/services"
 	"github.com/rakhiazfa/gin-boilerplate/pkg/utils"
 )
@@ -22,12 +22,13 @@ func NewAuthHandler(validator *utils.Validator, authService *services.AuthServic
 }
 
 func (handler *AuthHandler) SignIn(c *gin.Context) {
-	var req models.SignInReq
+	var req dtos.SignInReq
 
 	utils.PanicIfErr(c.ShouldBind(&req))
 	utils.PanicIfErr(handler.validator.Validate(req))
 
-	token := handler.authService.SignIn(req)
+	token, err := handler.authService.SignIn(req)
+	utils.PanicIfErr(err)
 
 	c.JSON(http.StatusOK, gin.H{
 		"token": token,
@@ -35,7 +36,7 @@ func (handler *AuthHandler) SignIn(c *gin.Context) {
 }
 
 func (handler *AuthHandler) SignUp(c *gin.Context) {
-	var req models.SignUpReq
+	var req dtos.SignUpReq
 
 	utils.PanicIfErr(c.ShouldBind(&req))
 	utils.PanicIfErr(handler.validator.Validate(req))
