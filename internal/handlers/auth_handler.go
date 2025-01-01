@@ -21,13 +21,13 @@ func NewAuthHandler(validator *utils.Validator, authService *services.AuthServic
 	}
 }
 
-func (handler *AuthHandler) SignIn(c *gin.Context) {
+func (h *AuthHandler) SignIn(c *gin.Context) {
 	var req dtos.SignInReq
 
 	utils.PanicIfErr(c.ShouldBind(&req))
-	utils.PanicIfErr(handler.validator.Validate(req))
+	utils.PanicIfErr(h.validator.Validate(req))
 
-	token, err := handler.authService.SignIn(req)
+	token, err := h.authService.SignIn(req)
 	utils.PanicIfErr(err)
 
 	c.JSON(http.StatusOK, gin.H{
@@ -35,13 +35,13 @@ func (handler *AuthHandler) SignIn(c *gin.Context) {
 	})
 }
 
-func (handler *AuthHandler) SignUp(c *gin.Context) {
+func (h *AuthHandler) SignUp(c *gin.Context) {
 	var req dtos.SignUpReq
 
 	utils.PanicIfErr(c.ShouldBind(&req))
-	utils.PanicIfErr(handler.validator.Validate(req))
+	utils.PanicIfErr(h.validator.Validate(req))
 
-	handler.authService.SignUp(req)
+	h.authService.SignUp(req)
 
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "Successfully created a new account.",

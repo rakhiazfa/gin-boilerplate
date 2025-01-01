@@ -15,10 +15,10 @@ func NewAuthService(db *gorm.DB) *AuthService {
 	}
 }
 
-func (service *AuthService) SignIn(req dtos.SignInReq) (string, error) {
+func (s *AuthService) SignIn(req dtos.SignInReq) (string, error) {
 	return "", nil
 }
 
-func (service *AuthService) SignUp(req dtos.SignUpReq) error {
+func (s *AuthService) SignUp(req dtos.SignUpReq) error {
 	return nil
 }
