@@ -21,7 +21,7 @@ import (
 func NewApplication() *gin.Engine {
 	validator := utils.NewValidator()
 	db := infrastructures.NewPostgresConnection()
-	authService := services.NewAuthService(db)
+	authService := services.NewAuthService(db, validator)
 	authHandler := handlers.NewAuthHandler(validator, authService)
 	engine := routes.InitRoutes(authHandler)
 	return engine

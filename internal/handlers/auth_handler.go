@@ -10,24 +10,20 @@ import (
 )
 
 type AuthHandler struct {
-	validator   *utils.Validator
 	authService *services.AuthService
 }
 
 func NewAuthHandler(validator *utils.Validator, authService *services.AuthService) *AuthHandler {
 	return &AuthHandler{
-		validator:   validator,
 		authService: authService,
 	}
 }
 
 func (h *AuthHandler) SignIn(c *gin.Context) {
 	var req dtos.SignInReq
-
 	utils.PanicIfErr(c.ShouldBind(&req))
-	utils.PanicIfErr(h.validator.Validate(req))
 
-	token, err := h.authService.SignIn(req)
+	token, err := h.authService.SignIn(c.Request.Context(), &req)
 	utils.PanicIfErr(err)
 
 	c.JSON(http.StatusOK, gin.H{
@@ -37,11 +33,10 @@ func (h *AuthHandler) SignIn(c *gin.Context) {
 
 func (h *AuthHandler) SignUp(c *gin.Context) {
 	var req dtos.SignUpReq
-
 	utils.PanicIfErr(c.ShouldBind(&req))
-	utils.PanicIfErr(h.validator.Validate(req))
 
-	h.authService.SignUp(req)
+	err := h.authService.SignUp(c.Request.Context(), &req)
+	utils.PanicIfErr(err)
 
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "Successfully created a new account.",
