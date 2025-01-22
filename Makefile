@@ -1,4 +1,13 @@
-GO_BASE := $(shell pwd)
+ifeq ($(OS),Windows_NT)
+  ifeq ($(ComSpec),$(shell echo %ComSpec%))
+    GO_BASE := $(shell cd)
+  else
+    GO_BASE := $(shell cygpath -w $(shell pwd))
+  endif
+else
+  GO_BASE := $(shell pwd)
+endif
+
 GO_BIN := $(GO_BASE)/bin
 
 MIGRATION_PATH := ./db/migrations
