@@ -1,17 +1,18 @@
 package entities
 
 import (
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type User struct {
-	BaseEntityWithSoftDelete
-	ProfilePicture string `gorm:"type:varchar(100);default:null"`
-	Name           string `gorm:"type:varchar(100)"`
-	Username       string `gorm:"type:varchar(100);unique"`
-	Email          string `gorm:"type:varchar(100);unique"`
-	Password       string `gorm:"type:varchar(100)"`
+	ApplicationEntity
+	ProfilePicture uuid.UUID `gorm:"type:uuid;default:null"`
+	Name           string    `gorm:"type:varchar(100)"`
+	Username       string    `gorm:"type:varchar(100);unique"`
+	Email          string    `gorm:"type:varchar(255);unique"`
+	Password       string    `gorm:"type:varchar(255)"`
 }
 
 func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
