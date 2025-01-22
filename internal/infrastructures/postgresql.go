@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func NewPostgresConnection() *gorm.DB {
+func NewPostgreSQLConnection() *gorm.DB {
 	dsn := fmt.Sprintf(
 		"host=%s port=%d dbname=%s user=%s password=%s sslmode=disable TimeZone=%s",
 		viper.GetString("database.host"),

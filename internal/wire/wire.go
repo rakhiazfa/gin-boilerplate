@@ -20,7 +20,7 @@ var authModule = wire.NewSet(
 
 func NewApplication() *gin.Engine {
 	wire.Build(
-		infrastructures.NewPostgresConnection,
+		infrastructures.NewPostgreSQLConnection,
 		utils.NewValidator,
 		authModule,
 		routes.InitRoutes,
