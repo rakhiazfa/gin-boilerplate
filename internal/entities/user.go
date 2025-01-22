@@ -15,27 +15,27 @@ type User struct {
 	Password       string    `gorm:"type:varchar(255)"`
 }
 
-func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
-	if user.Password != "" {
-		hash, err := user.HashPassword(user.Password)
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+	if u.Password != "" {
+		hash, err := u.HashPassword(u.Password)
 		if err != nil {
 			return err
 		}
 
-		user.Password = hash
+		u.Password = hash
 	}
 
 	return
 }
 
-func (user *User) BeforeUpdate(tx *gorm.DB) (err error) {
-	if tx.Statement.Changed("Password") && user.Password != "" {
-		hash, err := user.HashPassword(user.Password)
+func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
+	if tx.Statement.Changed("Password") && u.Password != "" {
+		hash, err := u.HashPassword(u.Password)
 		if err != nil {
 			return err
 		}
 
-		user.Password = hash
+		u.Password = hash
 	}
 
 	return

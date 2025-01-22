@@ -11,6 +11,7 @@ import (
 	"github.com/google/wire"
 	"github.com/rakhiazfa/gin-boilerplate/internal/handlers"
 	"github.com/rakhiazfa/gin-boilerplate/internal/infrastructures"
+	"github.com/rakhiazfa/gin-boilerplate/internal/repositories"
 	"github.com/rakhiazfa/gin-boilerplate/internal/services"
 	"github.com/rakhiazfa/gin-boilerplate/pkg/utils"
 	"github.com/rakhiazfa/gin-boilerplate/routes"
@@ -21,12 +22,15 @@ import (
 func NewApplication() *gin.Engine {
 	validator := utils.NewValidator()
 	db := infrastructures.NewPostgreSQLConnection()
-	authService := services.NewAuthService(db, validator)
+	userRepository := repositories.NewUserRepository(db)
+	authService := services.NewAuthService(db, validator, userRepository)
 	authHandler := handlers.NewAuthHandler(validator, authService)
 	engine := routes.InitRoutes(authHandler)
 	return engine
 }
 
 // wire.go:
+
+var userModule = wire.NewSet(repositories.NewUserRepository)
 
 var authModule = wire.NewSet(services.NewAuthService, handlers.NewAuthHandler)
