@@ -63,7 +63,7 @@ func FormatValidationErrors(errors validator.ValidationErrors) map[string]string
 		param := err.Param()
 
 		if tag == "eqfield" {
-			param = LcFirst(param)
+			param = ToTitleCase(param)
 		}
 
 		msgTemplate := customMessages[tag]
@@ -72,7 +72,7 @@ func FormatValidationErrors(errors validator.ValidationErrors) map[string]string
 			msgTemplate = fmt.Sprintf("%s validation failed on %s", field, tag)
 		}
 
-		msg := strings.Replace(msgTemplate, "/f", field, -1)
+		msg := strings.Replace(msgTemplate, "/f", ToTitleCase(field), -1)
 		msg = strings.Replace(msg, "/p", param, -1)
 
 		formattedErrors[field] = msg
