@@ -49,7 +49,8 @@ func handleHttpError(c *gin.Context, err *utils.HttpError) {
 
 func handleUniqueFieldError(c *gin.Context, err *utils.UniqueFieldError) {
 	c.AbortWithStatusJSON(err.StatusCode, gin.H{
-		"field":   err.Field,
-		"message": err.Message,
+		"errors": gin.H{
+			err.Field: err.Message,
+		},
 	})
 }

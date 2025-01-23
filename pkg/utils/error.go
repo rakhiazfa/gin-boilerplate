@@ -1,5 +1,7 @@
 package utils
 
+import "net/http"
+
 type HttpError struct {
 	StatusCode int
 	Message    string
@@ -21,7 +23,7 @@ type UniqueFieldError struct {
 
 func NewUniqueFieldError(field string, message string, reason error) *UniqueFieldError {
 	return &UniqueFieldError{
-		HttpError: NewHttpError(409, message, reason),
+		HttpError: NewHttpError(http.StatusBadRequest, message, reason),
 		Field:     field,
 	}
 }
